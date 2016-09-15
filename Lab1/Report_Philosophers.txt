@@ -37,4 +37,6 @@
 
   We can now run our verifier without encountering errors.
 
-3. ???
+3. The property we want to verify is a safety property since we always want
+to have mutual exclusion. This is implemented through a mutex bool variable
+that should always be true.

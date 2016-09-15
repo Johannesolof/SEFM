@@ -1,6 +1,9 @@
 #define NUM_PHIL 2
 
 byte forks[NUM_PHIL];
+bool mutex = true;
+
+ltl p1 {[]mutex};
 
 proctype phil(int id) {
     /*int leftHand = id;
@@ -22,13 +25,17 @@ proctype phil(int id) {
                 forks[second]++;
             }
 
-            assert(forks[first] == 1 && forks[second] == 1);
+            if
+                :: (forks[first] > 1 || forks[second] > 1) -> mutex = false;
+            fi
+
             printf("Philosopher %d is eating with fork %d and %d\n", id, first, second);
            
             forks[first]--;
             forks[second]--;
             
     od
+
 }
 
 init {
