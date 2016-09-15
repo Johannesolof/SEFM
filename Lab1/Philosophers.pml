@@ -2,8 +2,10 @@
 
 byte forks[NUM_PHIL];
 bool mutex = true;
+byte mutex2 = 0;
 
 ltl p1 {[]mutex};
+ltl p2 {[](mutex2 < 2)};
 
 proctype phil(int id) {
     /*int leftHand = id;
@@ -25,9 +27,11 @@ proctype phil(int id) {
                 forks[second]++;
             }
 
-            if
-                :: (forks[first] > 1 || forks[second] > 1) -> mutex = false;
-            fi
+            mutex2 = forks[first];
+            mutex2 = forks[second];
+
+            /*(forks[first] > 1 || forks[second] > 1) -> mutex = false;*/
+            mutex = !(forks[first] > 1 || forks[second] > 1);
 
             printf("Philosopher %d is eating with fork %d and %d\n", id, first, second);
            
