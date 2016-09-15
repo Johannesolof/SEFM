@@ -15,18 +15,26 @@
   available the fork value is incremented to claim the fork. The check and
   increment operation is atomic to ensure mutual exclusion.
 
+  In the first iteration of the solution a philosopher always tries to
+  acquire the left fork first.
+
 1. Assertions
 
   To verify the mutual exclusion we place an assertion in the philosopher 
   process after it has acquired both forks. The assertion checks that the
   value of both forks are one, meaning that they are not currently used by
-  another philosopher.
+  any other philosopher.
 
 2. Deadlocks
 
   a. In the first iteration of our solution, the philosophers always tries
-  to acquire the left fork first. By this we deadlock through circular wait.
-  (See Philosophers_Deadlock.pml and Philosophers_Deadlock.pml.trail).
+  to acquire the left fork first. By this we get deadlock through circular 
+  wait. (See Philosophers_Deadlock.pml and Philosophers_Deadlock.pml.trail.)
 
   b. To solve the deadlock we introduce resource hierarchy making each
-  philosopher always pick his lower numbered fork first.
+  philosopher always pick his lower numbered fork first. (Implemented by 
+  refactoring leftHand and rightHand variables into first and second.)
+
+  We can now run our verifier without encountering errors.
+
+3. ???
