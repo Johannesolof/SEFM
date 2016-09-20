@@ -4,7 +4,29 @@ NS2:
   words, we ensure that something "good" will eventually happen.
 
 NS3:
-  
+
+  Trail sequence:
+
+          1: Intruder sends msg1 to Bob with empty data
+  2: Bob receives msg1 from Intruder
+  3: Bob encounters a mismatch in keys and gets stuck
+
+          4: Intruder sends msg1 to Alice with empty data
+      5: Alice sends msg1 to Bob
+
+  Explanation:
+
+  What happens above is that Bob gets stuck at 3 since the key in the received
+  message doesn't match Bobs public key and thus the process will block 
+  forever. Intruder then sends a message to Alice. Since we have a
+  rendezvous channel, Intruder will be unable to continue until someone
+  receives its message. Finally, Alice also tries to send a message. At this
+  point, all processess are blocked since Bob is stuck at his guard, Intruder
+  is waiting for someone to receive his message (which no one will) and Alice
+  is waiting for access to the channel so that she can sen her message.
+
+
+          
 
 
 
