@@ -1,0 +1,11 @@
+NS2: 
+  For task 2 we ran a liveness test to ensure that both Alice and Bob
+  reach their end state (pan executed with 'a' and 'f' flags). In other 
+  words, we ensure that something "good" will eventually happen.
+
+NS3:
+  
+
+
+
+
