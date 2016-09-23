@@ -127,15 +127,15 @@ active proctype Intruder() {
   knows_nonceA = false;
   knows_nonceB = false;
   do
-    :: network ? (msg, recpt, data) ->
+    :: network ? (msg, _, data) ->
        if /* perhaps store the message */
          :: data.key == keyI -> /*Task 5*/
             intercepted.key      = data.key;
             intercepted.content1 = data.content1;
             intercepted.content2 = data.content2;
             if 
-              :: recpt == agentA -> knows_nonceA = true;
-              :: recpt == agentB -> knows_nonceB = true;
+              :: intercepted.content1 == agentA -> knows_nonceA = true;
+              :: intercepted.content1 == agentB -> knows_nonceB = true;
             fi ;
          :: else -> skip;
        fi ;
@@ -159,16 +159,20 @@ active proctype Intruder() {
               :: data.content1 = agentB;
               :: data.content1 = agentI;
               :: data.content1 = nonceI;
+              :: knows_nonceA || knows_nonceB -> data.content1 = intercepted.content2;
             fi ;     
             if /* assemble key */
               :: data.key = keyA;
               :: data.key = keyB;
               :: data.key = keyI;
             fi ;
-            data.content2 = nonceI;
+            if 
+              :: msg == msg3 -> data.content2 = 0;
+              :: else -> data.content2 = nonceI;
+            fi ;
        fi ;
        network ! msg (recpt, data);
-       /*knows_nonceA = false;
-       knows_nonceB = false;*/
+       knows_nonceA = false;
+       knows_nonceB = false;
   od 
 }
