@@ -6,4 +6,7 @@ liveness:
 	spin -t -p -l -g -r -s $(file)
 
 saftey:
-	
+	spin -a $(file)
+	gcc -DSAFETY -o pan pan.c
+	./pan
+	spin -t -p -l -g -r -s $(file)	
