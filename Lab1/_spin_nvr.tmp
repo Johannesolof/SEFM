@@ -1,7 +1,0 @@
-never task2 {    /* !(<> (((statusA==ok)) && ((statusB==ok)))) */
-accept_init:
-T0_init:
-	do
-	:: (! ((((statusA==ok)) && ((statusB==ok))))) -> goto T0_init
-	od;
-}
