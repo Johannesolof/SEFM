@@ -16,7 +16,7 @@ bool knows_nonceA, knows_nonceB;
 
 /*ltl task2 {<>(statusA == ok && statusB == ok)};*/
 
-ltl propAB {<>(statusA == ok && statusB == ok)};
+ltl propAB {[]((statusA == ok && statusB == ok) -> (partnerA == agentB && partnerB == agentA))};
 ltl propA {[]((statusA == ok && partnerA == agentB) -> !knows_nonceA)};
 ltl propB {[]((statusB == ok && partnerB == agentA) -> !knows_nonceB)};
 
@@ -129,13 +129,18 @@ active proctype Intruder() {
   do
     :: network ? (msg, _, data) ->
        if /* perhaps store the message */
-         :: data.key == keyI -> /*Task 5*/
-            intercepted.key      = data.key;
+         :: intercepted.key      = data.key;
             intercepted.content1 = data.content1;
             intercepted.content2 = data.content2;
-            if 
+         :: skip;
+       fi ;
+        
+       if /*Task 5*/
+         :: data.key == keyI -> 
+            if
               :: intercepted.content1 == agentA -> knows_nonceA = true;
               :: intercepted.content1 == agentB -> knows_nonceB = true;
+              :: else -> skip;
             fi ;
          :: else -> skip;
        fi ;
@@ -159,7 +164,8 @@ active proctype Intruder() {
               :: data.content1 = agentB;
               :: data.content1 = agentI;
               :: data.content1 = nonceI;
-              :: knows_nonceA || knows_nonceB -> data.content1 = intercepted.content2;
+              :: knows_nonceA -> data.content1 = nonceA; 
+              :: knows_nonceB -> data.content1 = nonceB;
             fi ;     
             if /* assemble key */
               :: data.key = keyA;
@@ -168,11 +174,14 @@ active proctype Intruder() {
             fi ;
             if 
               :: msg == msg3 -> data.content2 = 0;
-              :: else -> data.content2 = nonceI;
+              :: else -> 
+                if 
+                  :: data.content2 = nonceI;
+                  :: knows_nonceA -> data.content2 = nonceA; 
+                  :: knows_nonceB -> data.content2 = nonceB;
+                fi ;
             fi ;
        fi ;
        network ! msg (recpt, data);
-       knows_nonceA = false;
-       knows_nonceB = false;
   od 
 }
