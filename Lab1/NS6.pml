@@ -138,10 +138,10 @@ active proctype Intruder() {
        if /*Task 5*/
          :: data.key == keyI -> 
             if
-              :: intercepted.content1 == nonceA -> knows_nonceA = true;
-              :: intercepted.content1 == nonceB -> knows_nonceB = true;
-              :: intercepted.content2 == nonceA -> knows_nonceA = true;
-              :: intercepted.content2 == nonceB -> knows_nonceB = true;
+              :: data.content1 == nonceA -> knows_nonceA = true;
+              :: data.content1 == nonceB -> knows_nonceB = true;
+              :: data.content2 == nonceA -> knows_nonceA = true;
+              :: data.content2 == nonceB -> knows_nonceB = true;
               :: else -> skip;
             fi ;
          :: else -> skip;
