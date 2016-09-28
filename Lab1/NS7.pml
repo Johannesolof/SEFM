@@ -140,12 +140,12 @@ active proctype Intruder() {
        if /*Task 5*/
          :: data.key == keyI -> 
             if
-              :: intercepted.content1 == nonceA -> knows_nonceA = true;
-              :: intercepted.content1 == nonceB -> knows_nonceB = true;
-              :: intercepted.content2 == nonceA -> knows_nonceA = true;
-              :: intercepted.content2 == nonceB -> knows_nonceB = true;
-              :: intercepted.content3 == nonceA -> knows_nonceA = true;
-              :: intercepted.content3 == nonceB -> knows_nonceB = true;
+              :: data.content1 == nonceA -> knows_nonceA = true;
+              :: data.content1 == nonceB -> knows_nonceB = true;
+              :: data.content2 == nonceA -> knows_nonceA = true;
+              :: data.content2 == nonceB -> knows_nonceB = true;
+              :: data.content3 == nonceA -> knows_nonceA = true;
+              :: data.content3 == nonceB -> knows_nonceB = true;
               :: else -> skip;
             fi ;
          :: else -> skip;
@@ -179,14 +179,24 @@ active proctype Intruder() {
               :: data.key = keyB;
               :: data.key = keyI;
             fi ;
-            if 
-              :: msg == msg3 -> data.content2 = 0;
+            if /* assemble content2 */
+              :: msg == msg3 -> data.content2 = 0; data.content3 = 0;
               :: else -> 
                 if 
-                  :: data.content3 = nonceI;
+                  :: data.content2 = nonceI;
                   :: knows_nonceA -> data.content2 = nonceA; 
                   :: knows_nonceB -> data.content2 = nonceB;
                 fi ;
+
+                if /* assemble content3 */
+                  :: msg == msg2 -> 
+                    if
+                      :: data.content3 = nonceI;
+                      :: knows_nonceA -> data.content3 = nonceA;
+                      :: knows_nonceB -> data.content3 = nonceB;
+                    fi;
+                  else -> data.content3 = 0;
+                fi;
             fi ;
        fi ;
        network ! msg (recpt, data);

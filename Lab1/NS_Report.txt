@@ -3,6 +3,7 @@ NS2:
   reach their end state (pan executed with 'a' and 'f' flags). In other 
   words, we ensure that something "good" will eventually happen.
 
+
 NS3:
 
   Trail sequence:
@@ -24,6 +25,7 @@ NS3:
   point, all processess are blocked since Bob is stuck at his guard, Intruder
   is waiting for someone to receive his message (which no one will) and Alice
   is waiting for access to the channel so that she can sen her message.
+
 
 NS6:
 
@@ -66,6 +68,15 @@ NS6:
   Intruder is able to acquire nonceB while Bob through the entire procedure 
   thinks he is talking to Alice.
 
+
+NS7:
+
+  In the previous version, Intruder was able to copy msg2 from Bob and send it
+  to Alice to let her decrypt it and reply back. One reason for this was that
+  Alice thought the message was from Intruder and had now way determine who
+  the original sender was. With the patch, msg2 contains Bobs identity and
+  thus if Intruder would copy it and send it to Alice, she would recognize
+  that message was actually from Bob and not proceed with the communication.
 
 
 
