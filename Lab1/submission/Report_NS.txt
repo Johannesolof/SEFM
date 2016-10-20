@@ -1,0 +1,118 @@
+NS2: 
+  For task 2 we ran a liveness test to ensure that both Alice and Bob
+  reach their end state (pan executed with 'a' and 'f' flags). In other 
+  words, we ensure that something "good" will eventually happen.
+
+
+NS3:
+
+  Trail sequence:
+
+          1: Intruder sends msg1 to Bob with empty data
+  2: Bob receives msg1 from Intruder
+  3: Bob encounters a mismatch in keys and gets stuck
+
+          4: Intruder sends msg1 to Alice with empty data
+      5: Alice sends msg1 to Bob
+
+  Explanation:
+
+  What happens above is that Bob gets stuck at 3 since the key in the received
+  message doesn't match Bobs public key and thus the process will block 
+  forever. Intruder then sends a message to Alice. Since we have a
+  rendezvous channel, Intruder will be unable to continue until someone
+  receives its message. Finally, Alice also tries to send a message. At this
+  point, all processess are blocked since Bob is stuck at his guard, Intruder
+  is waiting for someone to receive his message (which no one will) and Alice
+  is waiting for access to the channel so that she can sen her message.
+
+
+NS6:
+
+  Since we have properties of a protocol that should always hold, all three
+  ltl-formulas are safety properties. We are not requiring that Alice or Bob
+  always reach their end state, but if they do, certain properties must hold,
+  thus the implication.
+
+  The properties that are violated are propAB (1) and propB (3).
+
+  Trail sequence:
+
+      1: Alice sends msg1 to Intruder
+          2: Intruder recieves msg1 from Alice (now knows nonceA)
+          3: Intruder sends msg1 to Bob claiming to be Alice with nonceA
+  4: Bob recieves msg1 from Intruder (believing it's Alice)
+  5: Bob sends msg2 to Alice with nonceA and nonceB
+          4: Intruder recieves msg2 from Bob (intended for Alice)
+          5: Intruder copies the encrypted msg2 from Bob and sends it to Alice
+      6: Alice recieves msg2 from Intruder (which she can decrypt)
+      7: Alice sends final msg3 to Intruder with nonceB (believing it's 
+         Intruders nonce) (Alice status is now ok)
+          8: Intruder recieves msg3 from Alice and is now able to decrypt it
+             (Intruder now knows nonceB)
+          9: Intruder sends msg3 to Bob with nonceB
+  10: Bob recieves msg3 from Intruder (Bob status is now ok)
+
+
+  Explanation:
+
+  propAB (1) has now been violated since both Alice and Bob have reached the 
+  status ok but Bobs communication partner is not Alice.
+
+  propB (3) has been violated since Bob has reached the status ok believing he
+  is talking to Alice while Intruder has been able to acquire nonceB.
+
+  Briefly summarized, Intruder uses the legitimate communication with Alice
+  to pretend to be Alice when initiating communication with Bob. Further, it
+  lets Alice decrypt messages from Bob intended for Alice. By this, 
+  Intruder is able to acquire nonceB while Bob through the entire procedure 
+  thinks he is talking to Alice.
+
+
+NS7:
+
+  In the previous version, Intruder was able to copy msg2 from Bob and send it
+  to Alice to let her decrypt it and reply back. One reason for this was that
+  Alice thought the message was from Intruder and had now way determine who
+  the original sender was. With the patch, msg2 contains Bobs identity and
+  thus if Intruder would copy it and send it to Alice, she would recognize
+  that message was actually from Bob and not proceed with the communication.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          1: Intruder sends msg1 to Bob claiming to be Alice but with its
+             own nonce
+      3: Alice sends standard msg1 to Intruder
+          4: Intruder recieves msg1 from Alice (now knows nonceA)
+          5: Intruder replies with standard msg2 to Alice
+      6: Alice recieves msg2 from Intruder
+  7: Bob replies with msg2 to Alice with Intruders nonce and its own 
+          8: Intruder recieves msg2 from Bob (intended for Alice)
+      9: Alice sends standard msg3 to Intruder
+          10: Intruder recieves msg3 from Alice (status is ok for Alice)
+
+
+
+          
+
+
+
+

@@ -1,0 +1,42 @@
+0. General
+
+  The forks in our solution are represented by a byte array where each index
+  represents a single fork. If the value of a fork is zero it means the fork 
+  is free for a philosopher to use. If the value is one it means the fork is
+  currently being used by a philosopher. If the value is greater than one it
+  means that multiple philosophers are using a single fork at the same time,
+  which should not be possible.
+
+  Each philosopher has their own process with an id. The index for the left 
+  fork of a philosopher is the same as the id. The index of the right fork
+  is the id minus one, with the exception of when the id is zero.
+
+  When acquiring a fork the process first checks if the fork is available. If
+  available the fork value is incremented to claim the fork. The check and
+  increment operation is atomic to ensure mutual exclusion.
+
+  In the first iteration of the solution a philosopher always tries to
+  acquire the left fork first.
+
+1. Assertions
+
+  To verify the mutual exclusion we place an assertion in the philosopher 
+  process after it has acquired both forks. The assertion checks that the
+  value of both forks are one, meaning that they are not currently used by
+  any other philosopher.
+
+2. Deadlocks
+
+  a. In the first iteration of our solution, the philosophers always tries
+  to acquire the left fork first. By this we get deadlock through circular 
+  wait. (See Philosophers_Deadlock.pml and Philosophers_Deadlock.pml.trail.)
+
+  b. To solve the deadlock we introduce resource hierarchy making each
+  philosopher always pick his lower numbered fork first. (Implemented by 
+  refactoring leftHand and rightHand variables into first and second.)
+
+  We can now run our verifier without encountering errors.
+
+3. The property we want to verify is a safety property since we always want
+to have mutual exclusion. This is implemented through a mutex bool variable
+that should always be true.
