@@ -1,4 +1,5 @@
 # Problem 1
+First steps are just simplifications, then the proof splits to proof the two exists formulas. The strategie for the first case is to get some arbitrary varibles from the exists formula and then use the same varibles in the forall formulas. Then it is only notLeft, orLeft and impLeft rules to close the proof. In the second case the proof builds on the ability to use the exists on the right hand side to introduce formulas with the correct varibles to close the proof. 
 See Problem1.key and Problem1.key.proof.
 
 # Problem 2
