@@ -1,0 +1,71 @@
+# Tutorial
+    Link: http://www.cse.chalmers.se/edu/year/2016/course/TDA293/fmco06post.pdf
+
+    Chapters:
+        Section 2: KeY background
+        Section 3: Details about case study (implementation to be verified)
+        Section 4: Walkthrough of verification process
+        Section 5: Same as 4 but more advanced
+
+# Workflow
+  
+  1. JML for Java implementation (method contract)
+  2. Go from JML to Java Card DL (Dynamic Logic)
+
+
+# Java Card DL Syntax
+
+  ## Function applications
+
+    Use dot notation instead of parenthesis: foo(bar) --> foo.bar.
+
+
+  ## Quantifiers and fresh variables
+
+    \forall intervals.Interval iv_lv;
+    {iv:=iv_lv}
+
+    Think generic example \forall x P(x), introduce fresh variable P(x_0).
+    {iv:=iv_lv} is introduction of fresh variable (ic == x_0 and iv_lv == x).xx§
+
+  ## Modal operators
+
+    "The formula \<prog\>F is true in a state s1 if there is a state s2 such 
+    that prog terminates in s2 when started in s1 and F is true in s2. 
+    The box operator \[. . .\] has the same semantics except that it does not
+    require termination."
+
+  ## State updates
+
+    "State Updates. We are certainly not able to touch on all central points 
+    of Java Card DL in this quick introduction, but there is one item we 
+    cannot drop, namely updates. Let us look at line 3 in Fig. 3. 
+    Here {iv:=iv_lv} is an example of an update. More precisely, it is an 
+    example of a special kind of update, called function update. The left-hand 
+    side of a function update is typically a program variable, as iv in this 
+    example, or an array or field access. The right-hand side can be an 
+    arbitrary Java Card DL term, which of course must be compatible with the 
+    type of the left-hand expression. Constructs like {i:=j++} where the 
+    right-hand side would have side-effects are not allowed in updates. 
+    If {lhs:=rhs} is a function update and F is a formula, then {lhs:=rhs}F 
+    is a Java Card DL formula. The formula {lhs:=rhs}F is true in state s1 if 
+    F is true in state s2 where s2 is obtained from s1 by performing the 
+    update. For example, the state s2 obtained from s1 by performing the 
+    update {iv:=iv_lv} (only) differs in the value of iv, which is in s2 the 
+    value that iv_lv has in s1."
+
+# Misc
+
+  ## Link to KeY-book
+
+    http://link.springer.com/book/10.1007%2F978-3-540-69061-0
+    (Possible to download PDF)
+
+  ## See .png-files in Lab2 folder for inline and contract examples.
+
+  ## Quote
+
+    In KeY a method contract is proved by showing that the method terminates 
+    in a state satisfying the postcondition when started in any state s1 
+    satisfying the preconditions and the invariants.
+
