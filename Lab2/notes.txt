@@ -1,3 +1,60 @@
+# Binary Search Contracts
+
+  ## public void report(String message)
+
+    ### Normal 1
+      * req1: All values in numbers must be equal to 1 (????)
+
+      * ens1: numbers != null (????)
+
+  ## public int performBinarySearch()
+
+    ### Normal 1
+      * req1: numbers != null
+      * req2: numbers must be sorted/ordered (can contain duplicates)
+      * req3: The query value is somewhere in numbers
+
+      * ens1: result is not -1 but index to query value
+
+    ### Normal 2 (????)
+      Case when numbers does not contain query ???
+      Handled by search() ?
+
+
+  ## private void eliminateDuplicates(int[] numbers)
+
+    ### Normal 1
+      * req1: numbers != null
+      * req2: numbers must be sorted/ordered (can contain duplicates)
+
+      * ens1: The value at a certain index is same before and after method
+              execution (???) (false if there are duplicates?)
+      * ens2: Ensures that numbers is sorted/ordered without duplicates
+      * ens3: numbers != null
+
+    ### Exceptional 1
+      * req1: numbers are empty or null
+      * throw exception yadda yadda
+
+
+  ## private int search()
+
+    ### Normal 1
+      * req1: numbers != null
+      * req2: numbers is sorted/ordered without duplicates
+      * req3: the query value exists in numbers (valid index can be returned) 
+
+      * ens1: result is not -1 but index to query value
+
+    ### Normal 2
+      * req1: numbers is sorted/ordered without duplicates
+      * req2: the query value doesn't exist in numbers (-1 returned) 
+
+    ### Excpetional 1
+      * req1: numbers is not sorted or it contains duplicates
+      * throw exception yadda yadda
+
+
 # Tutorial
     Link: http://www.cse.chalmers.se/edu/year/2016/course/TDA293/fmco06post.pdf
 
