@@ -1,3 +1,10 @@
+# Modifications to Problem 2 JML
+
+  – Add 'spec public' to private variables CHECK
+  – Add assignable clauses CHECK
+  – Add pure notations CHECK
+  – Check cursor invariants (?) CHECK
+
 # Binary Search Contracts
 
   ## public void report(String message)

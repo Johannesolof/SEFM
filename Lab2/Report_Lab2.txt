@@ -5,9 +5,6 @@ See Problem1.key and Problem1.key.proof.
 # Problem 2
 Our approach to this solution has been to derive all requirements from the comments but without adding additional requirements by making assumptions on the implementation. In other words, deriving requirements from the specification only and nothing else.
 
-## TODO:
-* Add invariants
-* Add annotation to pure methods 
-
 # Problem 3
+To be continued...
 

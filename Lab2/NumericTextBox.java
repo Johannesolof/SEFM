@@ -24,28 +24,42 @@ public class NumericTextBox
 	 * Note that the number of possible cursor positions is greater by one than
 	 * the length of the text box.
 	 */
-	private int cursorPosition;
+	// the cursorPosition is always a valid value
+	/* @ public static invariant
+		 @ content != null ==> cursorPosition >= 0 && cursorPosition <= content.length;
+		 @*/
+	// the content at the cursor is EMPTY
+	/* @ public static invariant
+		 @ content != null ==> content[cursorPosition] == EMPTY;
+		 @*/
+	private /*@spec_public@*/ int cursorPosition;
 
 	/**
 	 * This array stores the contents of the text box. At every position
 	 * before the cursor, there is a valid value (i.e. a single digit).
 	 * Positions after the cursor must be EMPTY.
 	 */
-	private int[] content;
+	// the content before the cursor contains only single digits
+		/* @ public static invariant
+		 @ content != null ==> 
+		 @ (\forall int x; x >= 0 && x < cursorPosition; isSingleDigit(content[x]));
+		 @*/
+	private /*@spec_public@*/ int[] content;
 
 	/**
 	 * Holds the current TextBoxRenderer. This can be null, which means that there
 	 * is no renderer assigned.
 	 */
-	private TextBoxRenderer textBoxRenderer;
+	private /*@spec_public@*/ TextBoxRenderer textBoxRenderer;
 
 	/**
 	 * Gets the currently assigned TextBoxRenderer.
 	 */
 	/* @
 		 @ ensures /result == textBoxRenderer;
+		 @ assignable \nothing;
 		 @ */
-	public TextBoxRenderer getRenderer()
+	public /*@ pure @*/ TextBoxRenderer getRenderer()
 	{
 		// ...
 	}
@@ -57,11 +71,13 @@ public class NumericTextBox
 	/* @
 		 @ requires renderer != null;
 		 @ ensures textBoxrenderer == renderer;
+		 @ assignable textboxRenderer;
 		 @
 		 @ also
 		 @ 
 		 @ requires renderer == null;
 		 @ ensures textBoxRenderer == null;
+		 @ assignable textboxRenderer;
 		 @ */
 	public void setRenderer(TextBoxRenderer renderer)
 	{
@@ -77,13 +93,15 @@ public class NumericTextBox
 	/* @
 		 @ require (input >= 0 && input <= 9);
 		 @ ensure \result == true;
+		 @ assignable \nothing;
 		 @
 		 @ also
 		 @ 
 		 @ require (input < 0 || input > 9);
 		 @ ensure \result == false;
+		 @ assignable \nothing;
 		 @ */
-	public boolean isSingleDigit(int input)
+	public /*@ pure @*/ boolean isSingleDigit(int input)
 	{
 		// ...
 	}
@@ -93,7 +111,7 @@ public class NumericTextBox
 	 * Also sets the contentChanged flag of the current TextBoxRenderer, if any.
 	 */
 	/* @
-		 @ ensure (\forall int x; x >= 0 && x <= 9; content[x] == EMPTY);
+		 @ ensure (\forall int x; x >= 0 && x < content.length; content[x] == EMPTY);
 		 @ ensure cursorPosition == 0;
 		 @ ensure textBoxRenderer != null ==> textBoxRenderer.contentChanged == true;
 		 @ */
@@ -148,6 +166,18 @@ public class NumericTextBox
 	 * 							the showError flag of the TextBoxRenderer is set
 	 * 							before the exception is thrown.
 	 */
+	/* @
+		 @ require cursorPosition > 0;
+		 @ ensure \old(cursorPosition)-1 == cursorPosition;
+		 @ ensure content[\old(cursorPosition)] == EMPTY;
+		 @ ensure textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+		 @
+		 @ also
+		 @
+		 @ require cursorPosition <= 0;
+		 @ ensure textBoxRenderer != null ==> textBoxRenderer.showError;
+		 @ signals_only RuntimeException;
+	   @ */
 	public void backspace()
 	{
 		// ...
