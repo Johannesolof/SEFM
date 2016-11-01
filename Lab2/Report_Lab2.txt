@@ -6,5 +6,16 @@ See Problem1.key and Problem1.key.proof.
 Our approach to this solution has been to derive all requirements from the comments but without adding additional requirements by making assumptions on the implementation. In other words, deriving requirements from the specification only and nothing else.
 
 # Problem 3
-To be continued...
+3.1
+
+  Procedure:
+
+    1. Load the performBinarySearch contract that we want solve and apply proof search.
+    2. Inline the first report method.
+    3. Apply the eliminateDuplicates contract for normal behaviour.
+    4. Inline the second report method.
+    5. Apply the search contract for normal behaviour where the result is a valid index (not -1).
+    6. Prune the proof back to 'Case2' of 'Pre (search)' (the exist requirement for performBinarySearch)
+    7. At this point we have q_0, q >= 0 and numbers[q_0] = query. To resolve n <= size we put self.query as the variable in one of the forall-clauses.
+    8. Apply proof search a final time.
 
