@@ -19,3 +19,15 @@ Our approach to this solution has been to derive all requirements from the comme
     7. At this point we have q_0, q >= 0 and numbers[q_0] = query. To resolve n <= size we put self.query as the variable in one of the forall-clauses.
     8. Apply proof search a final time.
 
+3.2
+
+The requirment that was not met was that it never threw any exception. To meet this requirment the code below was added at line 66. The assignment of size was also needed to satisfy the ensure clause.
+
+if (numbers.length == 0) {
+    size = -1;
+	throw new RuntimeException();
+}
+
+3.3
+
+The error in the invariant was found by the strategie described in the task description. We found that i < canvas[depth].length was not consitent on both side of the sequent. We could then conclude that the correct invariant on line 44 in Drawing.java should be i <= canvas[depth].length instead of i < canvas[depth].length.
