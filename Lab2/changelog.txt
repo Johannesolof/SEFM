@@ -1,0 +1,16 @@
+Changelog:
+
+  * Set textBoxRenderer field to nullable
+
+  * Consitency: modified enterCharacter to use 'p ==> q' instead of 
+    two contracts
+
+  * Modified enterCharacter postcondition to be more concrete, value should
+    now be equal to input instead of not equal to EMPTY
+
+  * Consistency: modified backspace to use 'p ==> q' instead of 
+    two contracts
+
+  * backspace postcondition should now be correct
+
+  * backspace assignable clause should now be correct

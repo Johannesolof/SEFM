@@ -50,7 +50,7 @@ public class NumericTextBox
 	 * Holds the current TextBoxRenderer. This can be null, which means that there
 	 * is no renderer assigned.
 	 */
-	private /*@spec_public@*/ TextBoxRenderer textBoxRenderer;
+	private /*@spec_public@*/ /*@ nullable @*/ TextBoxRenderer textBoxRenderer;
 
 	/**
 	 * Gets the currently assigned TextBoxRenderer.
@@ -120,15 +120,8 @@ public class NumericTextBox
 		 @ require textBoxRenderer != null;
 		 @ ensure (\forall int x; x >= 0 && x < content.length; content[x] == EMPTY);
 		 @ ensure cursorPosition == 0;
-		 @ ensure textBoxRenderer.contentChanged == true;
+		 @ ensure textBoxRenderer != null ==> textBoxRenderer.contentChanged == true;
 		 @ assignable content[*], textBoxRenderer, cursorPosition;
-		 @
-		 @ also
-		 @
-		 @ require textBoxRenderer == null;
-		 @ ensure (\forall int x; x >= 0 && x < content.length; content[x] == EMPTY);
-		 @ ensure cursorPosition == 0;
-		 @ assignable content[*], cursorPosition;
 		 @ */
 
 	public void clear()
@@ -152,7 +145,7 @@ public class NumericTextBox
 		 @ require isSingleDigit(input);
 		 @ require cursorPosition < content.length
 		 @ ensure \old(cursorPosition)+1 == cursorPosition;
-		 @ ensure content[\old(cursorPosition)] != EMPTY;
+		 @ ensure content[\old(cursorPosition)] == input;
 		 @ ensure textBoxRenderer != null ==> textBoxRenderer.contentChanged;
 		 @
 		 @ also
@@ -182,32 +175,16 @@ public class NumericTextBox
 	 * 							before the exception is thrown.
 	 */
 	/* @
-		 @ require textBoxRenderer != null;
 		 @ require cursorPosition > 0;
 		 @ ensure \old(cursorPosition)-1 == cursorPosition;
-		 @ ensure content[\old(cursorPosition)] == input;
-		 @ ensure textBoxRenderer.contentChanged;
-		 @ assignable content[\old(cursorPosition)], cursorPosition;
-		 @
-		 @ also
-		 @
-		 @ require textBoxRenderer == null;
-		 @ require cursorPosition > 0;
-		 @ ensure \old(cursorPosition)-1 == cursorPosition;
-		 @ ensure content[\old(cursorPosition)] == input;
-		 @ assignable content[\old(cursorPosition)], cursorPosition;
+		 @ ensure content[cursorPosition] == EMPTY;
+		 @ ensure textBoxRenderer != null ==> textBoxRenderer.contentChanged;
+		 @ assignable content[cursorPosition], cursorPosition;
 		 @
 		 @ also
 		 @ 
-		 @ require textBoxRenderer != null;
 		 @ require cursorPosition <= 0;
-		 @ ensure textBoxRenderer.showError;
-		 @ signals_only RuntimeException;
-		 @
-		 @ also
-		 @ 
-		 @ require textBoxRenderer == null;
-		 @ require cursorPosition <= 0;
+		 @ ensure textBoxRenderer != null ==> textBoxRenderer.showError;
 		 @ signals_only RuntimeException;
 	   @ */
 	public void backspace()
